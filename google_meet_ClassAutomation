@@ -1,0 +1,70 @@
+from datetime import *
+import time
+from time import sleep
+import webbrowser
+import os
+import calendar
+
+classes = {'monday' : ['AWP', 'DSP', 'ESD','LUNCH BREAK', 'AI', 'VLSID', 'SL LAB'],
+                'tuesday' : ['VLSID', 'DSP', 'AWP', 'LUNCH BREAK', 'DSP', 'ESD', 'FOME'],
+                'wednesday' : ['FOME', 'ESD', 'AWP', 'LUNCH BREAK', 'DSP', 'ESD', 'DSP DESIGN'],
+                'thursday' : ['PLACEMENT TRAINING', 'LUNCH BREAK', 'PLACEMENT TRAINING'],
+                'friday' : ['PLACEMENT TRAINING', 'LUNCH BREAK', 'PLACEMENT TRAINING'],
+                'saturday' : ['FOME', 'DSP', 'VLSID','LUNCH BREAK', 'ESD','AWP','E-CAD LAB'],
+              }
+
+links = { 'AWP':	'https://meet.google.com/utf-dhfw-jyh',
+            'DSP' : 'https://meet.google.com/hso-xusj-bui',
+            'ESD' : 'https://meet.google.com/bxc-zunw-jgd',
+            'AI' : 'https://meet.google.com/lookup/ggjkhdmcfp',
+            'CP' :'',	
+            'VLSID' : 'https://meet.google.com/iup-boaa-jjz',
+            'SL LAB' : 'https://meet.google.com/vfu-hfty-gmx',
+            'FOME' : 'https://meet.google.com/sxj-swri-enu ',
+            'E-CAD LAB' : 'https://meet.google.com/lookup/brzpz3qiql',
+            'PLACEMENT TRAINING': 'https://meet.google.com/lookup/hdlj3ho6u2',
+          }
+
+timetable = ['09:30 am,10:20 am','10:30 am,11:20 am', '11:30 am,12:20 pm', '12:20 pm,13:00 pm', '13:00 pm,13:50 pm', '14:00 pm,14:50 pm', '15:00 pm,15:50 pm']
+
+# day = str(time.strftime("%A"))
+date_and_time = datetime.now()
+date = str(date_and_time.day) + ' ' + str(date_and_time.month) + ' ' + str(date_and_time.year)
+date = datetime.strptime(date, '%d %m %Y').weekday()
+day = calendar.day_name[date]
+day=day.lower()
+# day = "monday"
+#time_now = str(time.strftime("%H:%M"))
+#time_now = input("Enter time : ")
+# time_now = "09:40"
+now = datetime.now()
+time_now = now.strftime("%H:%M")
+# print(current_time)
+print(time_now)
+
+def open_link(url):
+		firefox="C:/Program Files/Mozilla Firefox/firefox.exe %s"
+		driver=webbrowser.get(firefox).open_new(url)
+		return 
+
+for i in range(len(timetable)):
+	r = timetable[i].split(",")
+	print(r[0] <= time_now < r[1])
+	if r[0] <= time_now < r[1]:
+		start = i
+		break
+	
+for j in range(start,len(timetable)):
+	print(f"Opening Link for Class : {links[classes[day][j]]}")
+	open_link(links[classes[day][j]])
+	while True:
+		time_now = str(time.strftime("%H:%M"))
+		# time_now = input("Enter time : ")
+		print(f"Class {classes[day][j]} going On")
+		if time_now >= timetable[j].split(",")[1]:
+			print("Next Class")
+			browserExe = "Firefox.exe"
+			os.system("taskkill /f /im "+browserExe)
+			break
+		#print(f"Open Link for Class : {links[classes[day][j]]}")
+		sleep(60)
